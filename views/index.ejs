@@ -1,0 +1,63 @@
+<%- include('partials/header') %>
+
+<input id="databaseName" type="text" placeholder="database name">
+<input id="createDatabase" type="button" value="Create Database">
+
+<div id="example"></div>
+
+<script>
+function arrayToList(arr) {
+  let unorderedList = '<ul>'
+  for (let i = 0; i < arr.length; i++) {
+    unorderedList += `<li>${arr[i]}</li>`
+  }
+  unorderedList += '</ul>'
+  return unorderedList
+}
+
+document.getElementById('createDatabase').addEventListener('click', event => {
+  event.preventDefault()
+  const dbName = document.getElementById('databaseName').value
+  if (dbName != '') {
+    fetch('/', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "text/plain;charset=UTF-8"
+      },
+      body: dbName
+    })
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById("example").innerHTML = arrayToList(data)
+    })
+  }
+})
+</script>
+
+<!--
+
+1. make list appear when page loads
+2. add delete/update
+
+
+
+
+
+- endless scroll
+- search
+
+
+
+
+query input
+add input
+
+
+list database 
+- delete
+
+
+
+
+-->
+<%- include('partials/footer') %>
