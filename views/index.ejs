@@ -9,17 +9,45 @@
 function arrayToList(arr) {
   let unorderedList = '<ul>'
   for (let i = 0; i < arr.length; i++) {
-    unorderedList += `<li>${arr[i]}</li>`
+    unorderedList += `<li>${arr[i]}<input onclick="del(this)" type="button" value="yes" style="display:none;">
+    <input onclick="showbuttons(this)" type="button" value="delete">
+    <input onclick="hidebuttons(this)" type="button" value="no" style="display:none;">
+    </li>`
   }
   unorderedList += '</ul>'
   return unorderedList
+}
+
+function showbuttons(e) {
+  e.previousElementSibling.style.display="inline";
+  e.nextElementSibling.style.display="inline";
+  e.style.display="none";
+}
+function del(e) {
+  // e.preventDefault()
+  fetch('/delete-database', {
+    method: 'POST',
+    headers: {
+      "Content-Type": "text/plain;charset=UTF-8"
+    },
+    body: e.previousSibling.data
+  })
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById("example").innerHTML = arrayToList(data)
+  })
+}
+function hidebuttons(e) {
+  e.previousElementSibling.previousElementSibling.style.display="none";
+  e.previousElementSibling.style.display="inline";
+  e.style.display="none";
 }
 
 document.getElementById('createDatabase').addEventListener('click', event => {
   event.preventDefault()
   const dbName = document.getElementById('databaseName').value
   if (dbName != '') {
-    fetch('/', {
+    fetch('/create-database', {
       method: 'POST',
       headers: {
         "Content-Type": "text/plain;charset=UTF-8"
