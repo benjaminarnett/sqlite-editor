@@ -8,7 +8,7 @@ app.use(express.text())
 app.use(express.static(__dirname + '/public'))
 
 app.get('/', (req, res) => {
-  res.render('index')
+  res.render('index', { Mydata: fs.readdirSync('database') })
 })
 
 app.post('/create-database', (req, res) => {
