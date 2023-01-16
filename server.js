@@ -12,8 +12,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/create-database', (req, res) => {
-  const databaseFilename = req.body
-  new sqlite3.Database(`database/${databaseFilename}.db`, (err) => {
+  new sqlite3.Database(`database/${req.body}.db`, (err) => {
     if (err) {
       console.error(err.message)
     }
@@ -24,8 +23,7 @@ app.post('/create-database', (req, res) => {
 })
 
 app.post('/delete-database', (req, res) => {
-  const filename = req.body
-  fs.unlink(`database/${filename}`, (err) => {
+  fs.unlink(`database/${req.body}`, (err) => {
     if (err) {
       console.error(err.message)
     }

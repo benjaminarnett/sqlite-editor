@@ -5,3 +5,6 @@ body {
     margin: 0;
     font-family: monospace;
 }
+ul {
+    list-style: none;
+}

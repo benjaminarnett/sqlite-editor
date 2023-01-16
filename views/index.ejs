@@ -9,10 +9,10 @@
 function arrayToList(arr) {
   let unorderedList = '<ul>'
   for (let i = 0; i < arr.length; i++) {
-    unorderedList += `<li>${arr[i]}<input onclick="del(this)" type="button" value="yes" style="display:none;">
+    unorderedList += `<li>
     <input onclick="showbuttons(this)" type="button" value="delete">
-    <input onclick="hidebuttons(this)" type="button" value="no" style="display:none;">
-    </li>`
+    <input onclick="del(this)" type="button" value="yes" style="display:none;">
+    <input onclick="hidebuttons(this)" type="button" value="no" style="display:none;">${arr[i]}</li>`
   }
   unorderedList += '</ul>'
   return unorderedList
@@ -21,8 +21,13 @@ function arrayToList(arr) {
 document.getElementById("example").innerHTML = arrayToList(<%- JSON.stringify(Mydata) %>)
 
 function showbuttons(e) {
-  e.previousElementSibling.style.display="inline";
   e.nextElementSibling.style.display="inline";
+  e.nextElementSibling.nextElementSibling.style.display="inline";
+  e.style.display="none";
+}
+function hidebuttons(e) {
+  e.previousElementSibling.previousElementSibling.style.display="inline";
+  e.previousElementSibling.style.display="none";
   e.style.display="none";
 }
 function del(e) {
@@ -31,17 +36,12 @@ function del(e) {
     headers: {
       "Content-Type": "text/plain;charset=UTF-8"
     },
-    body: e.previousSibling.data
+    body: e.nextSibling.nextSibling.nextSibling.data
   })
   .then(response => response.json())
   .then(data => {
     document.getElementById("example").innerHTML = arrayToList(data)
   })
-}
-function hidebuttons(e) {
-  e.previousElementSibling.previousElementSibling.style.display="none";
-  e.previousElementSibling.style.display="inline";
-  e.style.display="none";
 }
 
 document.getElementById('createDatabase').addEventListener('click', event => {
