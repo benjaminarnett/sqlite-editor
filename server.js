@@ -7,6 +7,8 @@ app.set('view engine', 'ejs')
 app.use(express.text())
 app.use(express.static(__dirname + '/public'))
 
+fs.mkdirSync('database', { recursive: true })
+
 app.get('/', (req, res) => {
   res.render('index', { Mydata: fs.readdirSync('database') })
 })
