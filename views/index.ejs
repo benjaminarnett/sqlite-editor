@@ -1,25 +1,14 @@
 <%- include('partials/header') %>
 
-<input id="databaseName" type="text" placeholder="database name">
+<div id="databaseTools">
 <input id="createDatabase" type="button" value="Create Database">
-
+<input id="databaseName" type="text" placeholder="database name">
+<input id="searchDatabase" type="search" placeholder="search"><br>
 <div id="example"></div>
+</div>
+
 
 <script>
-function arrayToList(arr) {
-  let unorderedList = '<ul>'
-  for (let i = 0; i < arr.length; i++) {
-    unorderedList += `<li>
-    <input onclick="showbuttons(this)" type="button" value="delete">
-    <input onclick="del(this)" type="button" value="yes" style="display:none;">
-    <input onclick="hidebuttons(this)" type="button" value="no" style="display:none;">${arr[i]}</li>`
-  }
-  unorderedList += '</ul>'
-  return unorderedList
-}
-
-document.getElementById("example").innerHTML = arrayToList(<%- JSON.stringify(Mydata) %>)
-
 function showbuttons(e) {
   e.nextElementSibling.style.display="inline";
   e.nextElementSibling.nextElementSibling.style.display="inline";
@@ -36,7 +25,7 @@ function del(e) {
     headers: {
       "Content-Type": "text/plain;charset=UTF-8"
     },
-    body: e.nextSibling.nextSibling.nextSibling.data
+    body: e.nextSibling.nextSibling.data
   })
   .then(response => response.json())
   .then(data => {
@@ -44,10 +33,21 @@ function del(e) {
   })
 }
 
+function arrayToList(arr) {
+  let unorderedList = '<ul>'
+  for (let i = 0; i < arr.length; i++) {
+    unorderedList += `<li><input onclick="showbuttons(this)" type="button" value="delete"><input onclick="del(this)" type="button" value="&check;" style="display:none;"><input onclick="hidebuttons(this)" type="button" value="&cross;" style="display:none;">${arr[i]}</li>`
+  }
+  unorderedList += '</ul>'
+  return unorderedList
+}
+
+document.getElementById("example").innerHTML = arrayToList(<%- JSON.stringify(Mydata) %>)
+
 document.getElementById('createDatabase').addEventListener('click', event => {
   event.preventDefault()
   const dbName = document.getElementById('databaseName').value
-  if (dbName != '') {
+  if (/\S/.test(dbName)) {
     fetch('/create-database', {
       method: 'POST',
       headers: {
@@ -61,6 +61,8 @@ document.getElementById('createDatabase').addEventListener('click', event => {
     })
   }
 })
+
+
 </script>
 
 <%- include('partials/footer') %>
