@@ -35,6 +35,17 @@ app.post('/delete-database', (req, res) => {
   })
 })
 
+app.post('/search-databases', (req, res) => {
+  const arr = fs.readdirSync('database')
+  var newArr = []
+  for (i in arr) {
+    if (req.body == arr[i].substring(0, req.body.length)) {
+      newArr.push(arr[i])
+    } 
+  }
+  res.json(newArr)
+})
+
 app.listen(3000, () => {
   console.log(`listening on port 3000`)
 })

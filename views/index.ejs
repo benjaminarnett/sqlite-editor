@@ -3,7 +3,7 @@
 <div id="databaseTools">
 <input id="createDatabase" type="button" value="Create Database">
 <input id="databaseName" type="text" placeholder="database name">
-<input id="searchDatabase" type="search" placeholder="search"><br>
+<input id="searchDatabases" type="search" placeholder="search"><br>
 <div id="example"></div>
 </div>
 
@@ -44,7 +44,7 @@ function arrayToList(arr) {
 
 document.getElementById("example").innerHTML = arrayToList(<%- JSON.stringify(Mydata) %>)
 
-document.getElementById('createDatabase').addEventListener('click', event => {
+document.getElementById('createDatabase').addEventListener('click', (event) => {
   event.preventDefault()
   const dbName = document.getElementById('databaseName').value
   if (/\S/.test(dbName)) {
@@ -62,6 +62,23 @@ document.getElementById('createDatabase').addEventListener('click', event => {
   }
 })
 
+const search = document.getElementById('searchDatabases')
+search.addEventListener('keyup', (event) => {
+  event.preventDefault()
+  fetch('/search-databases', {
+    method: 'POST', 
+    headers: {
+      "Content-Type": "text/plain;charset=UTF-8"
+    },
+    body: search.value
+  })
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById("example").innerHTML = arrayToList(data)
+  })
+
+
+})
 
 </script>
 
