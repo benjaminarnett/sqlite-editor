@@ -12,7 +12,7 @@ This application was implemented using:
 
 - Express - routes for get/post requests
 - EJS - templates (i.e. header/footer)
-- SQlite - databases 
+- SQLite - databases 
 
 **Functionality**
 
